@@ -137,18 +137,36 @@ button_frame  = ctk.CTkFrame(app)
 button_frame.grid(row=2,  column=0, columnspan=2, padx=5,pady=5)
 
 import serial.tools.list_ports
-# ports = serial.tools.list_ports.comports()
 serialInst = serial.Serial()
+
+portsList = []
+ports = serial.tools.list_ports.comports()
+print('all ports: ')
+for onePort in ports: 
+	portsList.append(str(onePort))
+	print(str(onePort))
+
+
+val = input('Select Port: COM')
 serialInst.baudrate = 9600
-serialInst.port = "COM8" #portVar
-serialInst.open()
+# serialInst.port = "COM8" 
+serialInst.port = val
+
+try: 
+    serialInst.open()
+except: 
+    pass
 
 import json 
 def send_msg():
     msg = {"msgType":"CAN","msgID":512,"msg":12345}
     msg = json.dumps(msg)
     print(msg)
-    serialInst.write(msg.encode('utf-8'))
+    try: 
+        serialInst.write(msg.encode('utf-8'))
+    except: 
+        print('seems like serial is not connected correctly')
+
 
 
 msg_button = ctk.CTkButton(button_frame, text=r'Send Ping {"msgType":"CAN","msgID":512,"msg":12345}',command=send_msg)
