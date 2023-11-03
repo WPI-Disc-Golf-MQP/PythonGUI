@@ -150,12 +150,13 @@ for onePort in ports:
 val = input('Select Port: COM')
 serialInst.baudrate = 9600
 # serialInst.port = "COM8" 
-serialInst.port = val
+serialInst.port = "COM" + str(val)
 
 try: 
     serialInst.open()
-except: 
-    pass
+except Exception as e:
+    print(e) 
+    print('COM not setup correctly')
 
 import json 
 def send_msg():
