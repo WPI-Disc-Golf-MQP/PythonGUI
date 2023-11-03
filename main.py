@@ -59,14 +59,17 @@ input_data_df = pd.DataFrame(input_starting_data)
 output_data_df = pd.DataFrame(output_starting_data)
 
 def start_machine():
-    global machine_started
-    machine_started = True
-    start_button.configure(state=ctk.DISABLED)
-    stop_button.configure(state=ctk.NORMAL)
+    # global machine_started
+    # machine_started = True
+    # start_button.configure(state=ctk.DISABLED)
+    # stop_button.configure(state=ctk.NORMAL)
 
-    add_button.configure(state=ctk.DISABLED)
-    remove_button.configure(state=ctk.DISABLED)
-    export_button.configure(state=ctk.DISABLED)
+    # add_button.configure(state=ctk.DISABLED)
+    # remove_button.configure(state=ctk.DISABLED)
+    # export_button.configure(state=ctk.DISABLED)
+
+    send_msg()
+
 
 def stop_machine():
     global machine_started
