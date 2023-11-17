@@ -14,7 +14,7 @@ print('all ports: ')
 for onePort in ports: 
     portsList.append(onePort)
     # print(str(onePort))
-    print(type(onePort.device))
+    print((onePort.device))
     # print(type(onePort))
 
 # import sys
