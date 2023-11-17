@@ -241,4 +241,24 @@ out_table.heading("# 9", text="Images (image)")
 out_table.grid(row=2,column=0)
 
 
-app.mainloop()
+# app.mainloop()
+
+
+# command line interface for GUI testing 
+def main_CLI():
+    while True: 
+        action = input("what do you want to do? (SEND)")
+        if action == "SEND":
+            print(send_msg())
+        else:
+            print('not recognized')
+
+
+while True: 
+    GUICLI = input('Boot GUI or CLI Interface? (GUI / CLI)')
+    if GUICLI == "GUI":
+        app.mainloop()
+    elif GUICLI == "CLI": 
+        main_CLI()
+    else: 
+        print('please input a valid input...')
