@@ -2,6 +2,7 @@ import customtkinter as ctk
 import tkinter as tk
 from tkinter import ttk
 import pandas as pd
+import time
 
 
 import serial.tools.list_ports
@@ -21,7 +22,8 @@ for onePort in ports:
 # sys.exit()
 
 # val = input('Select Port: COM')
-serialInst.baudrate = 9600
+# serialInst.baudrate = 9600
+serialInst.baudrate = 115200
 # serialInst.port = "COM8" 
 # serialInst.port = "COM" + str(val)
 serialInst.port = portsList[0].device
@@ -33,11 +35,40 @@ except Exception as e:
     print(e) 
     print('COM not setup correctly')
 
+
+
+
+def send_message_and_wait_for_response(ser, message, timeout=5, max_retries=4):
+    retries = 0
+
+    while retries <= max_retries:
+        # Send the message
+        ser.write(message.encode('utf-8'))
+        print("Sent message:", message)
+
+        start_time = time.time()
+
+        while time.time() - start_time < timeout:
+            # Check if there is data available to be read
+            if ser.inWaiting() > 0:
+                response = ser.readline().decode('utf-8').strip()
+                print("Received response:", response)
+
+                if True: 
+                # if response == "GOT CAN MESSAGE: status is failure":
+                    return response
+                else: 
+                    raise Exception("did not get expected response from microcontroller, got this: "+response)
+
+        print("No response within the timeout period. Retrying...")
+        retries += 1
+
+    print("No response after retrying. Exiting.")
+
+
+
 import json 
 def send_msg():
-    msg = {"msgType":"CAN","msgID":512,"msg":12345}
-    msg = json.dumps(msg)
-    print(msg)
     try: 
         serialInst.write(msg.encode('utf-8'))
     except: 
@@ -248,12 +279,24 @@ def main():
     app.mainloop()
 
 
+msg = json.dumps({"msgType":"CAN","msgID":512,"msg":12345})
+
+
 # command line interface for GUI testing 
 def main_CLI():
-    while True: 
+    while True:
+        # get  
+        # print('checked for responses:')
+        # if serialInst.inWaiting() > 0: 
+        #     line = serialInst.readline()
+        #     print("Received data:", line.decode('utf-8').strip())
+        # print()
+
+        # send 
         action = input("what do you want to do? (SEND)")
         if action == "SEND":
-            print(send_msg())
+            # send_msg()
+            send_message_and_wait_for_response(serialInst, msg)
         else:
             print('not recognized')
 
