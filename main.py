@@ -279,7 +279,7 @@ def main():
     app.mainloop()
 
 
-msg = json.dumps({"msgType":"CAN","msgID":512,"msg":12345})
+msg = json.dumps({"msgType":"CAN","msgID":1,"msg":12345})
 
 
 # command line interface for GUI testing 
