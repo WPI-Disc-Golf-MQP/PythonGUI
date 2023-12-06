@@ -76,7 +76,7 @@ def send_msg():
 
 
 
-def main():
+def main_GUI():
 
 
 
@@ -279,7 +279,6 @@ def main():
     app.mainloop()
 
 
-msg = json.dumps({"msgType":"CAN","msgID":1,"msg":12345})
 
 
 # command line interface for GUI testing 
@@ -293,10 +292,23 @@ def main_CLI():
         # print()
 
         # send 
-        action = input("what do you want to do? (SEND)")
+        action = input("what do you want to do? (SEND, SEND START, SEND STOP, MODULES)")
         if action == "SEND":
-            # send_msg()
+            msg = json.dumps({"msgType":"CAN","msgID":1,"msg":12345}) 
             send_message_and_wait_for_response(serialInst, msg)
+
+        elif action == "SEND START": 
+            msg = json.dumps({"msgType":"CAN","msgID":1,"msg":0}) # tells Conveyor Module to run routine 0
+            send_message_and_wait_for_response(serialInst, msg)
+
+        elif action == "SEND STOP": 
+            msg = json.dumps({"msgType":"CAN","msgID":1,"msg":1}) # tells Conveyor Module to run routine 1
+            send_message_and_wait_for_response(serialInst, msg)
+
+        elif action == "MODULES": 
+            msg = json.dumps({"msgType":"MODULES","msgID":None,"msg":None})
+            send_message_and_wait_for_response(serialInst, msg)
+        
         else:
             print('not recognized')
 
@@ -304,7 +316,7 @@ def main_CLI():
 while True: 
     GUICLI = input('Boot GUI or CLI Interface? (GUI / CLI)')
     if GUICLI == "GUI":
-        main()
+        main_GUI()
     elif GUICLI == "CLI": 
         main_CLI()
     else: 
